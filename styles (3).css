@@ -1,0 +1,618 @@
+/* =========================================================
+   SÚPER BARRIO · styles.css
+   Mobile first: base = celular (1 columna). Desde 768 px = 2 columnas.
+   ========================================================= */
+
+/* 1. FUENTES (Google Fonts) ------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap");
+
+/* 2. VARIABLES (paleta, tipografía, medidas) -------------- */
+:root {
+  /* Color principal: amarillo mostaza */
+  --color-primario: #D99A00;
+  --color-primario-hover: #B98100;
+  --color-primario-claro: #FFF3D1;
+  --color-sobre-primario: #2B1F00; /* texto oscuro sobre mostaza: mejor lectura */
+
+  /* Estados del stock */
+  --color-ok: #2E9E5B;       /* verde: normal */
+  --color-bajo: #F28C28;     /* naranja: bajo el mínimo */
+  --color-sin-stock: #D93025; /* rojo: sin stock */
+  --color-ok-fondo: #E4F5EB;
+  --color-bajo-fondo: #FDEBD7;
+  --color-sin-stock-fondo: #FBE3E1;
+
+  /* Neutros */
+  --color-fondo: #F5F6F8;
+  --color-superficie: #FFFFFF;
+  --color-texto: #1F2430;
+  --color-texto-suave: #5F6675;
+  --color-borde: #E3E6EB;
+
+  /* Tipografía */
+  --fuente-titulos: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fuente-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Forma y sombras */
+  --radio: 14px;
+  --radio-chico: 10px;
+  --sombra: 0 2px 10px rgba(31, 36, 48, 0.08);
+  --sombra-fuerte: 0 6px 16px rgba(31, 36, 48, 0.16);
+  --espacio: 1rem;
+  --transicion: 0.2s ease;
+}
+
+/* 3. BASE / RESET ------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* evita que el menú tape los títulos al navegar */
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-family: var(--fuente-titulos);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+
+p { margin: 0 0 0.75rem; }
+
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+/* 4. ENCABEZADO -------------------------------------------- */
+#encabezado {
+  background: linear-gradient(135deg, var(--color-primario), #F0B429);
+  color: var(--color-sobre-primario);
+  padding: 1.25rem var(--espacio);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#encabezado h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+#encabezado h1::before { content: "🛒 "; }
+
+#encabezado p { margin: 0; font-weight: 500; }
+
+#acciones-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 5. MENÚ DE NAVEGACIÓN ------------------------------------ */
+#menu {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-superficie);
+  box-shadow: var(--sombra);
+}
+
+#menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem var(--espacio);
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto; /* en pantallas angostas el menú se desliza */
+}
+
+#menu a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  color: var(--color-texto);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background var(--transicion), transform var(--transicion);
+}
+
+#menu a:hover,
+#menu a.activa {
+  background: var(--color-primario-claro);
+  transform: translateY(-1px);
+}
+
+/* Íconos del menú (emojis) */
+#menu a[data-seccion="productos"]::before   { content: "📦"; }
+#menu a[data-seccion="movimientos"]::before { content: "🔄"; }
+#menu a[data-seccion="alertas"]::before     { content: "🔔"; }
+#menu a[data-seccion="categorias"]::before  { content: "🏷️"; }
+
+/* Contador de alertas: círculo rojo con número */
+#contador-alertas {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.35rem;
+  border-radius: 50%;
+  background: var(--color-sin-stock);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 6. CONTENEDOR PRINCIPAL Y SECCIONES ---------------------- */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--espacio);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+main > section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio);
+}
+
+main > section > h2 { margin-bottom: 0; }
+
+/* Íconos de los títulos de sección */
+#productos > h2::before   { content: "📦 "; }
+#movimientos > h2::before { content: "🔄 "; }
+#alertas > h2::before     { content: "🔔 "; }
+#categorias > h2::before  { content: "🏷️ "; }
+
+/* 7. FORMULARIOS COMO TARJETAS ----------------------------- */
+form,
+#filtros-productos,
+#filtros-movimientos {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: var(--espacio);
+  display: grid;
+  grid-template-columns: 1fr; /* celular: una columna */
+  gap: var(--espacio);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+label[for="buscador-productos"]::before { content: "🔍 "; }
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  background: #fff;
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+textarea { resize: vertical; }
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(217, 154, 0, 0.25);
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 8. BOTONES ------------------------------------------------ */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radio-chico);
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: background var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+}
+
+/* Hover: cambia el color y se eleva levemente */
+button:hover {
+  background: var(--color-primario-hover);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: var(--sombra);
+}
+
+/* Botón deshabilitado (por ejemplo, imprimir sin alertas) */
+button:disabled,
+button:disabled:hover {
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botones secundarios (reset y los del encabezado) */
+button[type="reset"],
+#acciones-datos button {
+  background: #fff;
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+button[type="reset"]:hover,
+#acciones-datos button:hover {
+  background: var(--color-primario-claro);
+  color: var(--color-sobre-primario);
+}
+
+/* Botón de acción peligrosa (para eliminar, lo usará app.js) */
+.btn-peligro {
+  background: var(--color-sin-stock);
+  color: #fff;
+}
+.btn-peligro:hover { background: #B3261E; }
+
+/* Botones chicos dentro de tablas y listas */
+td button,
+li button {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+/* Íconos de los botones (emojis) */
+#btn-exportar::before             { content: "📤"; }
+#btn-importar::before             { content: "📥"; }
+#btn-guardar-producto::before     { content: "💾"; }
+#btn-cancelar-producto::before    { content: "✖️"; }
+#btn-registrar-movimiento::before { content: "✅"; }
+#btn-cancelar-movimiento::before  { content: "🧹"; }
+#btn-guardar-categoria::before    { content: "➕"; }
+#btn-imprimir-reposicion::before  { content: "🖨️"; }
+
+/* 9. TABLAS (dentro de una tarjeta con scroll horizontal) --- */
+table {
+  display: block;            /* permite scroll horizontal en el celular */
+  width: 100%;
+  overflow-x: auto;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+th {
+  background: var(--color-primario-claro);
+  color: var(--color-sobre-primario);
+  font-family: var(--fuente-titulos);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tbody tr { transition: background var(--transicion); }
+tbody tr:hover { background: #FAFAFB; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* 10. INDICADORES DE ESTADO DEL STOCK ----------------------- */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado-ok         { background: var(--color-ok-fondo);        color: #1E7A43; }
+.estado-bajo       { background: var(--color-bajo-fondo);      color: #B35F0B; }
+.estado-sin-stock  { background: var(--color-sin-stock-fondo); color: #B3261E; }
+
+.estado-ok::before        { content: "🟢"; }
+.estado-bajo::before      { content: "🟠"; }
+.estado-sin-stock::before { content: "🔴"; }
+
+/* Tipo de movimiento (entrada / salida) */
+.tipo-entrada { color: #1E7A43; font-weight: 600; }
+.tipo-salida  { color: #B3261E; font-weight: 600; }
+.tipo-entrada::before { content: "⬆️ "; }
+.tipo-salida::before  { content: "⬇️ "; }
+
+/* 11. LISTAS COMO TARJETAS (alertas y categorías) ----------- */
+ul#lista-alertas,
+ul#lista-categorias {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr; /* celular: una columna */
+  gap: 0.75rem;
+}
+
+#lista-alertas li,
+#lista-categorias li {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 0.9rem var(--espacio);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Borde de color según la gravedad de la alerta */
+#lista-alertas li.alerta-bajo      { border-left: 6px solid var(--color-bajo); }
+#lista-alertas li.alerta-sin-stock { border-left: 6px solid var(--color-sin-stock); }
+
+#lista-categorias li::before { content: "🏷️"; }
+#lista-categorias li { justify-content: flex-start; }
+#lista-categorias li button { margin-left: auto; }
+
+/* Acciones (Editar / Eliminar) de cada ítem de lista */
+.acciones-item {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+#lista-categorias li .acciones-item button { margin-left: 0; }
+
+.categoria-cantidad {
+  color: var(--color-texto-suave);
+  font-size: 0.85rem;
+}
+
+/* Contenido de cada alerta */
+#lista-alertas li { flex-wrap: wrap; }
+
+.alerta-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.alerta-codigo {
+  color: var(--color-texto-suave);
+  font-size: 0.8rem;
+}
+
+.alerta-datos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  font-size: 0.9rem;
+}
+
+.alerta-pedido {
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  background: var(--color-primario-claro);
+  color: var(--color-sobre-primario);
+  font-weight: 600;
+}
+.alerta-pedido::before { content: "🛒 "; }
+
+/* Mensaje cuando la lista está vacía */
+#lista-alertas:empty::before,
+#lista-categorias:empty::before {
+  grid-column: 1 / -1;
+  padding: 1.25rem;
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  color: var(--color-texto-suave);
+  text-align: center;
+}
+
+#lista-alertas:empty::before    { content: "✅ Todo el stock está en orden."; }
+#lista-categorias:empty::before { content: "🏷️ Todavía no hay categorías cargadas."; }
+
+/* Información del producto al escribir el código en Movimientos */
+.info-producto {
+  margin: 0;
+  min-height: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--color-texto-suave);
+}
+.info-producto.info-ok    { color: #1E7A43; font-weight: 600; }
+.info-producto.info-error { color: #B3261E; font-weight: 600; }
+.info-producto.info-ok::before    { content: "✅ "; }
+.info-producto.info-error::before { content: "❌ "; }
+
+/* 12. PIE DE PÁGINA ----------------------------------------- */
+#pie {
+  padding: 1.5rem var(--espacio);
+  text-align: center;
+  color: var(--color-texto-suave);
+  font-size: 0.875rem;
+}
+
+/* 13. DESDE 768 px: DOS COLUMNAS ---------------------------- */
+@media (min-width: 768px) {
+  #encabezado {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+  }
+
+  #menu ul {
+    justify-content: center;
+    overflow-x: visible;
+  }
+
+  main { padding: 2rem; }
+
+  /* Formularios y filtros en dos columnas */
+  form,
+  #filtros-productos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Elementos que ocupan el ancho completo */
+  form .botones,
+  form textarea,
+  .campo:has(textarea),
+  #filtros-productos .campo:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Listas en dos columnas */
+  ul#lista-alertas,
+  ul#lista-categorias {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 14. ACCESIBILIDAD: respeta "reducir movimiento" ------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
+  button:hover { transform: none; }
+}
+
+/* 15. HOJA DE REPOSICIÓN ------------------------------------ */
+/* En pantalla la hoja está oculta */
+#zona-impresion { display: none; }
+
+@media print {
+  @page { margin: 1.5cm; }
+
+  /* Al imprimir desde el botón se oculta todo menos la hoja de reposición.
+     (La clase solo existe durante esa impresión: Ctrl+P normal imprime la página completa.) */
+  body.imprimiendo-reposicion { background: #fff; }
+  body.imprimiendo-reposicion > *:not(#zona-impresion) { display: none !important; }
+  body.imprimiendo-reposicion #zona-impresion { display: block; }
+
+  #zona-impresion {
+    color: #000;
+    font-family: var(--fuente-texto);
+  }
+
+  #zona-impresion h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  #zona-impresion p  { margin-bottom: 1rem; }
+
+  #zona-impresion table {
+    display: table;
+    width: 100%;
+    overflow: visible;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    border-collapse: collapse;
+  }
+
+  #zona-impresion th,
+  #zona-impresion td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #000;
+    white-space: normal;
+    color: #000;
+    background: #fff;
+  }
+
+  #zona-impresion th {
+    background: #eee;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  #zona-impresion tr { break-inside: avoid; }
+
+  #zona-impresion .col-pedido { width: 5rem; text-align: center; }
+
+  /* Casillero para tildar */
+  .casillero {
+    display: inline-block;
+    width: 1.3rem;
+    height: 1.3rem;
+    border: 2px solid #000;
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+
+  .producto-codigo-impresion {
+    display: block;
+    font-size: 0.8rem;
+    color: #444;
+  }
+}
